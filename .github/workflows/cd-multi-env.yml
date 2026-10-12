@@ -1,0 +1,45 @@
+
+name: CD - Multi Environment
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Deploy Staging
+        run: |
+          echo "Deploying to STAGING..."
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Staging deployment successful!"
+
+  deploy-prod:
+    name: Deploy to Production
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Deploy Production
+        run: |
+          echo "Deploying to PRODUCTION..."
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Production deployment successful!"
